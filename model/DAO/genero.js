@@ -104,10 +104,29 @@ const getSelectLastId = async function(){
     }
 }
 
+//Exclui um genero pelo id no banco de dados
+const setDeleteGenders = async function (id) {
+    try {
+        let sql = `delete from tbl_genero where id_genero = ${id}`
+
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if(Array.isArray(result))
+            return result
+        else
+            return false
+
+    } catch (error) {
+        //console.log(error)
+        return false
+    }
+}
+
 module.exports = {
     getAllGenders,
     getSelectGendersById,
     setInsertGenders,
     setUpdateGenders,
-    getSelectLastId
+    getSelectLastId,
+    setDeleteGenders
 }
