@@ -19,7 +19,7 @@ const listarGeneros = async function () {
 
     try {
         //Chama a função do DAO para retornar a lista de generos do banco de dados
-        let resultGeneros = await generoDAO.getAllGenders()
+        let resultGeneros = await generoDAO.getAllGenres()
 
         if (resultGeneros) {
             if (resultGeneros.length > 0) {
@@ -46,7 +46,7 @@ const buscarGeneroId = async function (id) {
 
     try {
         if (!isNaN(id) && id != '' && id != null && id > 0) {
-            let resultGeneros = await generoDAO.getSelectGendersById(Number(id))
+            let resultGeneros = await generoDAO.getSelectGenresById(Number(id))
 
             if (resultGeneros) {
                 if (resultGeneros.length > 0) {
@@ -82,7 +82,7 @@ const inserirGenero = async function (genero, contentType) {
             //Validação de entrada de todos os atributo do filme
             if (genero.nome != '' || genero.nome != undefined || genero.nome != null || genero.nome.length < 100) {
 
-                let resultGeneros = await generoDAO.setInsertGenders(genero)
+                let resultGeneros = await generoDAO.setInsertGenres(genero)
 
                 if (resultGeneros) {
 
@@ -133,7 +133,7 @@ const atualizarGenero = async function (genero, id, contentType) {
                     genero.id = Number(id)
 
                     //Chama a função para inserir um novo gênero no banco de dados
-                    let resultGeneros = await generoDAO.setUpdateGenders(genero)
+                    let resultGeneros = await generoDAO.setUpdateGenres(genero)
 
                     if (resultGeneros) {
 
@@ -176,14 +176,14 @@ const excluirGenero = async function(id){
 
             if(validarId.status_code == 200){
 
-                let resultGeneros = await generoDAO.setDeleteGenders(Number(id))
+                let resultGeneros = await generoDAO.setDeleteGenres(Number(id))
 
                 if(resultGeneros){
 
                     MESSAGES.DEFAULT_HEADER.status          = MESSAGES.SUCESS_DELETED_ITEM.status
                     MESSAGES.DEFAULT_HEADER.status_code     = MESSAGES.SUCESS_DELETED_ITEM.status_code
                     MESSAGES.DEFAULT_HEADER.message         = MESSAGES.SUCESS_DELETED_ITEM.message
-                    MESSAGES.DEFAULT_HEADER.items.genero     = resultGeneros
+                    delete MESSAGES.DEFAULT_HEADER.items
 
                     return MESSAGES.DEFAULT_HEADER //200
                     

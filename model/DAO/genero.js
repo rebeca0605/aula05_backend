@@ -12,7 +12,7 @@ const { PrismaClient } = require('../../generated/prisma')
 const prisma = new PrismaClient()
 
 //Retorna todos os gêneros cadastrados no banco de dados
-const getAllGenders = async function () {
+const getAllGenres = async function () {
     try {
         //Script SQL
         let sql = `select * from tbl_genero order by id_genero desc`
@@ -31,7 +31,7 @@ const getAllGenders = async function () {
 }
 
 //Retorna um gênero filtrando pelo id do banco de dados
-const getSelectGendersById = async function (id) {
+const getSelectGenresById = async function (id) {
     try {
         //Script SQL
         let sql = `select * from tbl_genero where id_genero=${id}`
@@ -50,7 +50,7 @@ const getSelectGendersById = async function (id) {
 }
 
 //Insere um gênero novo no banco de dados
-const setInsertGenders = async function (genero) {
+const setInsertGenres = async function (genero) {
     try {
         let sql = `INSERT INTO tbl_genero (nome) VALUES ('${genero.nome}')`
 
@@ -67,7 +67,7 @@ const setInsertGenders = async function (genero) {
 }
 
 //Altera um gênero no banco de dados
-const setUpdateGenders = async function (genero) {
+const setUpdateGenres = async function (genero) {
     try {
 
         let sql = `update tbl_genero set nome = '${genero.nome}' where id_genero = ${genero.id}`
@@ -77,6 +77,24 @@ const setUpdateGenders = async function (genero) {
 
         if (result)
             return true
+        else
+            return false
+
+    } catch (error) {
+        //console.log(error)
+        return false
+    }
+}
+
+//Exclui um genero pelo id no banco de dados
+const setDeleteGenres = async function (id) {
+    try {
+        let sql = `delete from tbl_genero where id_genero = ${id}`
+
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if(Array.isArray(result))
+            return result
         else
             return false
 
@@ -104,29 +122,12 @@ const getSelectLastId = async function(){
     }
 }
 
-//Exclui um genero pelo id no banco de dados
-const setDeleteGenders = async function (id) {
-    try {
-        let sql = `delete from tbl_genero where id_genero = ${id}`
-
-        let result = await prisma.$queryRawUnsafe(sql)
-
-        if(Array.isArray(result))
-            return result
-        else
-            return false
-
-    } catch (error) {
-        //console.log(error)
-        return false
-    }
-}
 
 module.exports = {
-    getAllGenders,
-    getSelectGendersById,
-    setInsertGenders,
-    setUpdateGenders,
-    getSelectLastId,
-    setDeleteGenders
+    getAllGenres,
+    getSelectGenresById,
+    setInsertGenres,
+    setUpdateGenres,
+    setDeleteGenres,
+    getSelectLastId
 }

@@ -192,7 +192,7 @@ const excluirDiretor = async function(id){
                     MESSAGES.DEFAULT_HEADER.status          = MESSAGES.SUCESS_DELETED_ITEM.status
                     MESSAGES.DEFAULT_HEADER.status_code     = MESSAGES.SUCESS_DELETED_ITEM.status_code
                     MESSAGES.DEFAULT_HEADER.message         = MESSAGES.SUCESS_DELETED_ITEM.message
-                    MESSAGES.DEFAULT_HEADER.items.diretor     = resultDiretores
+                    delete MESSAGES.DEFAULT_HEADER.items
 
                     return MESSAGES.DEFAULT_HEADER //200
                     

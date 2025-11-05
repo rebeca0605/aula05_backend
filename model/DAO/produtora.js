@@ -102,24 +102,6 @@ const setInsertProdutora = async function (produtora) {
     }
 }
 
-//Retorna o último id gerado no banco de dados
-const getSelectLastId = async function(){
-    try {
-        //Script sql para retornar apenas o último id do banco
-        let sql = `select id_produtora from tbl_produtora order by id_produtora desc limit 1`
-
-        let result = await prisma.$queryRawUnsafe(sql)
-
-        if (Array.isArray(result))
-            return Number(result[0].id_produtora)
-        else
-            return false
-
-    } catch (error) {
-        return false
-    }
-}
-
 //Altera uma produtora no banco de dados
 const setUpdateProdutora = async function (produtora) {
     try {
@@ -148,6 +130,23 @@ const setUpdateProdutora = async function (produtora) {
     }
 }
 
+//Retorna o último id gerado no banco de dados
+const getSelectLastId = async function(){
+    try {
+        //Script sql para retornar apenas o último id do banco
+        let sql = `select id_produtora from tbl_produtora order by id_produtora desc limit 1`
+
+        let result = await prisma.$queryRawUnsafe(sql)
+
+        if (Array.isArray(result))
+            return Number(result[0].id_produtora)
+        else
+            return false
+
+    } catch (error) {
+        return false
+    }
+}
 
 module.exports = {
     getSelectAllProdutoras,
