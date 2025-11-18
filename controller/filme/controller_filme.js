@@ -102,7 +102,20 @@ const inserirFilme = async function (filme, contentType) {
                         //Processar a inserção de dados na tabela de relação entre filme e gênero
                         filme.genero.forEach(async function(genero){
                             let filmeGenero = {id_filme: lastId, id_genero: genero.id}
-                            let resultFilmeGenero = await controllerFilmeGenero.inserirFilmeGenero(filmeGenero)
+                            let resultFilmeGenero = await controllerFilmeGenero.inserirFilmeGenero(filmeGenero, contentType)
+
+                            if(resultFilmeGenero.status_code != 201)
+                                return MESSAGES.ERROR_RELATIONAL_INSERTION //500 Problema na tabela de relacionamento   
+
+                        //Adicionar no JSON os dados do GENERO
+                        delete filme.genero
+
+                        let resultDadosGeneros = await controllerFilmeGenero.listarGenerosIdFilme(lastID)
+                        //console.log(resultDadosGeneros.items.filme_genero)
+                        
+                        filme.genero = resultDadosGeneros.items.filmes_genero
+                        //
+                        MESSAGES.DEFAULT_HEADER.items = filme
                         })
 
                         //Adiciona o id no json com os dados do filme

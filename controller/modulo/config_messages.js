@@ -30,6 +30,7 @@ const ERROR_INTERNAL_SERVER_CONTROLLER  = {status: false, status_code: 500, mess
 const ERROR_INTERNAL_SERVER_MODEL       = {status: false, status_code: 500, message: 'Não foi possível processar a requisição, devido a erros internos no servidor (modelagem de dados)!'}
 const ERROR_REQUIRED_FIELDS             = {status: false, status_code: 400, message: 'Não foi possível processar a requisição, pois existem campos obrigatórios que devem ser encaminhados e atendidos conforme a documentação!'}
 const ERROR_CONTENT_TYPE                = {status: false, status_code: 415, message: 'Não foi possível processar a requisição, pois o tipo de dados enviados no corpo deve ser JSON!'}
+const ERROR_RELATIONAL_INSERTION        = {status: false, status_code: 500, message: 'A requisição do item principsl foi processada com sucesso, porém houveram problemas ao inserir dados na tabela de relacionamento!'}
 
 
 module.exports = {
@@ -42,5 +43,6 @@ module.exports = {
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_INTERNAL_SERVER_MODEL,
     ERROR_REQUIRED_FIELDS,
-    ERROR_CONTENT_TYPE
+    ERROR_CONTENT_TYPE,
+    ERROR_RELATIONAL_INSERTION
 }
