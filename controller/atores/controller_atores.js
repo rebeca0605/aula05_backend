@@ -23,8 +23,8 @@ const listarAtores = async function () {
 
         if (resultAtores) {
             if (resultAtores.length > 0) {
-                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
-                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                 MESSAGES.DEFAULT_HEADER.items.atores = resultAtores
 
                 return MESSAGES.DEFAULT_HEADER //200

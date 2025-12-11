@@ -20,9 +20,9 @@ const DEFAULT_HEADER = {development: 'Rebeca Gomes',
 
 /******************************* MENSAGENS DE SUCESSO *******************************/
 const SUCESS_REQUEST        = {status: true, status_code: 200, message: 'Requisição bem sucedida!'}
-const SUCESS_CREATED_ITEM   = {status: true, status_code: 201, message: 'Item criado com sucesso!'}
-const SUCESS_UPDATED_ITEM   = {status: true, status_code: 200, message: 'Item atualizado com sucesso!'}
-const SUCESS_DELETED_ITEM   = {status: true, status_code: 200, message: 'Item excluído com sucesso!'}
+const SUCCESS_CREATED_ITEM   = {status: true, status_code: 201, message: 'Item criado com sucesso!'}
+const SUCCESS_UPDATED_ITEM   = {status: true, status_code: 200, message: 'Item atualizado com sucesso!'}
+const SUCCESS_DELETED_ITEM   = {status: true, status_code: 200, message: 'Item excluído com sucesso!'}
 
 /******************************* MENSAGENS DE ERRO *********************************/
 const ERROR_NOT_FOUND                   = {status: false, status_code: 404, message: 'Não foram encontrados dados de retorno!'}
@@ -36,9 +36,9 @@ const ERROR_RELATIONAL_INSERTION        = {status: false, status_code: 500, mess
 module.exports = {
     DEFAULT_HEADER,
     SUCESS_REQUEST,
-    SUCESS_CREATED_ITEM,
-    SUCESS_UPDATED_ITEM,
-    SUCESS_DELETED_ITEM,
+    SUCCESS_CREATED_ITEM,
+    SUCCESS_UPDATED_ITEM,
+    SUCCESS_DELETED_ITEM,
     ERROR_NOT_FOUND,
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_INTERNAL_SERVER_MODEL,

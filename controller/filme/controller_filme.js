@@ -27,8 +27,8 @@ const listarFilmes = async function () {
 
         if (resultFilmes) {
             if (resultFilmes.length > 0) {
-                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
-                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                 MESSAGES.DEFAULT_HEADER.items.filme = resultFilmes
 
                 return MESSAGES.DEFAULT_HEADER //200
@@ -54,8 +54,8 @@ const buscarFilmeId = async function (id) {
 
             if (resultFilmes) {
                 if (resultFilmes.length > 0) {
-                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
-                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.items.filme = resultFilmes
 
                     return MESSAGES.DEFAULT_HEADER //200
@@ -77,35 +77,50 @@ const buscarFilmeId = async function (id) {
 
 //Insere um filme
 const inserirFilme = async function (filme, contentType) {
-    //Criando um objeto novo para as mensagens
+
+    //criando um novo objeto para modificar a mensagem padrão
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
 
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
 
-            //Chama a função de validar todos os dados filme
+            //chama a função de validação dos dados do filme
             let validar = await validarDadosFilme(filme)
 
             if (!validar) {
-
                 //Processamento
-                //Chama a função para inserir um novo filme no banco de dados
+                //chama a função do model para inserir um novo filme no BD
                 let resultFilmes = await filmeDAO.setInsertMovies(filme)
 
                 if (resultFilmes) {
 
-                    //Chama a função para receber o id gerado no banco de dados
-                    let lastId = await filmeDAO.getSelectLastId()
-                    if (lastId) {
+                    //Chama a função para receber o ID gerado no Banco
+                    let lastID = await filmeDAO.getSelectLastId()
 
-                        //Processar a inserção de dados na tabela de relação entre filme e gênero
-                        filme.genero.forEach(async function(genero){
-                            let filmeGenero = {id_filme: lastId, id_genero: genero.id}
+                    
+                    if (lastID) {
+
+                          //Processar a inserção de dados na tabela de relação entre filme e gênero
+                          //entre filme e Gênero
+
+                          //subsituindo forEach por forOf para respeitar o tempo do async e retornar os nomes e IDs dos
+                          for(genero of filme.genero){
+
+                            let filmeGenero = {id_filme: lastID, id_genero: genero.id}
+
+                            //Encaminha o JSON com o ID do filme e do gênero para a controller FilmeGenero
                             let resultFilmeGenero = await controllerFilmeGenero.inserirFilmeGenero(filmeGenero, contentType)
 
                             if(resultFilmeGenero.status_code != 201)
-                                return MESSAGES.ERROR_RELATIONAL_INSERTION //500 Problema na tabela de relacionamento   
+                                return MESSAGES.ERROR_RELATIONAL_INSERTION //500 Problema na tabela de relacionamento
+                        }
+
+                        //Adiciona o id no json com os dados do filme
+                        filme.id = lastID
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message
 
                         //Adicionar no JSON os dados do GENERO
                         delete filme.genero
@@ -116,14 +131,6 @@ const inserirFilme = async function (filme, contentType) {
                         filme.genero = resultDadosGeneros.items.filmes_genero
                         //
                         MESSAGES.DEFAULT_HEADER.items = filme
-                        })
-
-                        //Adiciona o id no json com os dados do filme
-                        filme.id = lastId
-                        MESSAGES.DEFAULT_HEADER.status          = MESSAGES.SUCESS_CREATED_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code     = MESSAGES.SUCESS_CREATED_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message         = MESSAGES.SUCESS_CREATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items           = filme
 
                         return MESSAGES.DEFAULT_HEADER //201
                     } else {
@@ -133,16 +140,20 @@ const inserirFilme = async function (filme, contentType) {
                 } else {
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
                 }
+
             } else {
                 return validar //400
             }
+
         } else {
             return MESSAGES.ERROR_CONTENT_TYPE //415
         }
 
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
+
 }
 
 //Atualiza um filme filtrando pelo id

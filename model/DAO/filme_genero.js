@@ -53,13 +53,16 @@ const getSelectByIdMoviesGenres = async function (id) {
 const getSelectGenresByIdMovies = async function (id_filme) {
     try {
         //Script SQL
-        let sql = `select tbl_genero.id_genero, tbl_genero.nome
+        let sql = `select tbl_genero.genero_id, tbl_genero.nome
                     from tbl_filme 
                         inner join tbl_filme_genero
-                            on tbl_filme.id_filme = tbl_filme_genero.id_filme
+                            on tbl_filme.filme_id = tbl_filme_genero.filme_id
                         inner join tbl_genero
-                            on tbl_genero.id_genero = tbl_filme_genero.id_genero
-                    where tbl_filme.id_filme =${id_filme}`
+                            on tbl_genero.genero_id = tbl_filme_genero.genero_id
+                    where tbl_filme.filme_id =${id_filme}`
+
+                    //console.log(sql)
+
 
         //Encaminha para o banco de dados o script SQL
         let result = await prisma.$queryRawUnsafe(sql)
@@ -78,13 +81,13 @@ const getSelectGenresByIdMovies = async function (id_filme) {
 const getSelectMoviesByIdGenre = async function (id_genero) {
     try {
         //Script SQL
-        let sql = `select tbl_filme.id_filme, tbl_filme.nome
+        let sql = `select tbl_filme.filme_id, tbl_filme.nome
                     from tbl_filme 
                         inner join tbl_filme_genero
-                            on tbl_filme.id_filme = tbl_filme_genero.id_filme
+                            on tbl_filme.filme_id = tbl_filme_genero.filme_id
                         inner join tbl_genero
-                            on tbl_genero.id_genero = tbl_filme_genero.id_genero
-                    where tbl_genero.id_genero =${id_genero}`
+                            on tbl_genero.genero_id = tbl_filme_genero.genero_id
+                    where tbl_genero.genero_id =${id_genero}`
 
         //Encaminha para o banco de dados o script SQL
         let result = await prisma.$queryRawUnsafe(sql)
@@ -120,17 +123,19 @@ const getSelectLastId = async function(){
 //Insere um gênero novo no banco de dados
 const setInsertMoviesGenres = async function (filmeGenero) {
     try {
-        let sql = `INSERT INTO tbl_filme_genero (id_filme), (id_genero) 
+        let sql = `INSERT INTO tbl_filme_genero (filme_id, genero_id)
                     VALUES (${filmeGenero.id_filme}, ${filmeGenero.id_genero})`
 
         let result = await prisma.$executeRawUnsafe(sql)
+
+        console.log(result)
         if (result)
             return true
         else
             return false
 
     } catch (error) {
-        //console.log(error)
+        console.log(error)
         return false
     }
 }
@@ -140,8 +145,8 @@ const setUpdateMoviesGenres = async function (filmeGenero) {
     try {
 
         let sql = `update tbl_filme_genero set 
-                        id_filme = ${filmeGenero.id_filme}, 
-                        id_genero = ${filmeGenero.id_genero} 
+                        filme_id = ${filmeGenero.id_filme}, 
+                        genero_id = ${filmeGenero.id_genero} 
                     where id = ${filmeGenero.id}`
 
         //console.log(sql)

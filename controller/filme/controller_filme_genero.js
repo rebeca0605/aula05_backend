@@ -1,3 +1,4 @@
+
 /********************************************************************************************************
 * Objetivo: Arquivo responsável pela manipulação e dados entre o app e a model para o crud na relação entre filme e gênero.
 * Data: 05/11/2025
@@ -23,8 +24,8 @@ const listarFilmesGeneros = async function () {
 
         if (resultFilmesGeneros) {
             if (resultGeneros.length > 0) {
-                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
-                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                 MESSAGES.DEFAULT_HEADER.items.filmes_genero = resultFilmesGeneros
 
                 return MESSAGES.DEFAULT_HEADER //200
@@ -50,8 +51,8 @@ const buscarFilmeGeneroId = async function (id) {
 
             if (resultFilmesGeneros) {
                 if (resultFilmesGeneros.length > 0) {
-                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
-                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.items.filmes_genero = resultFilmesGeneros
 
                     return MESSAGES.DEFAULT_HEADER //200
@@ -77,13 +78,16 @@ const listarGenerosIdFilme = async function (idFilme) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
+
+        //Validação do ID
         if (!isNaN(idFilme) && idFilme != '' && idFilme != null && idFilme > 0) {
             let resultFilmesGeneros = await filmeGeneroDAO.getSelectGenresByIdMovies(Number(idFilme))
+           // console.log(resultFilmesGeneros)
 
             if (resultFilmesGeneros) {
                 if (resultFilmesGeneros.length > 0) {
-                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
-                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.items.filmes_genero = resultFilmesGeneros
 
                     return MESSAGES.DEFAULT_HEADER //200
@@ -103,7 +107,7 @@ const listarGenerosIdFilme = async function (idFilme) {
     }
 }
 
-//Retorna um gênero filtrando pelo filme
+//Retorna um filme filtrando pelo gênero
 const listarFilmesIdGeneros = async function (idGenero) {
     //Criando um objeto novo para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
@@ -114,8 +118,8 @@ const listarFilmesIdGeneros = async function (idGenero) {
 
             if (resultFilmesGeneros) {
                 if (resultFilmesGeneros.length > 0) {
-                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_REQUEST.status
-                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.items.filmes_genero = resultFilmesGeneros
 
                     return MESSAGES.DEFAULT_HEADER //200
@@ -160,9 +164,9 @@ const inserirFilmeGenero = async function (filmeGenero, contentType) {
                     if (lastId) {
 
                         filmeGenero.id = lastId
-                        MESSAGES.DEFAULT_HEADER.status          = MESSAGES.SUCESS_CREATED_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code     = MESSAGES.SUCESS_CREATED_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message         = MESSAGES.SUCESS_CREATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.status          = MESSAGES.SUCCESS_CREATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code     = MESSAGES.SUCCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message         = MESSAGES.SUCCESS_CREATED_ITEM.message
                         MESSAGES.DEFAULT_HEADER.items           = filmeGenero
 
                         return MESSAGES.DEFAULT_HEADER //201
@@ -181,6 +185,7 @@ const inserirFilmeGenero = async function (filmeGenero, contentType) {
         }
 
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER //500
     }
 }
@@ -210,9 +215,9 @@ const atualizarFilmeGenero = async function (filmeGenero, id, contentType) {
 
                     if (resultFilmesGeneros) {
 
-                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCESS_UPDATED_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCESS_UPDATED_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCESS_UPDATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATED_ITEM.message
                         MESSAGES.DEFAULT_HEADER.items.filmes_genero = filmeGenero
 
                         return MESSAGES.DEFAULT_HEADER //200
@@ -253,9 +258,9 @@ const excluirFilmeGenero = async function(id){
 
                 if(resultFilmesGeneros){
 
-                    MESSAGES.DEFAULT_HEADER.status          = MESSAGES.SUCESS_DELETED_ITEM.status
-                    MESSAGES.DEFAULT_HEADER.status_code     = MESSAGES.SUCESS_DELETED_ITEM.status_code
-                    MESSAGES.DEFAULT_HEADER.message         = MESSAGES.SUCESS_DELETED_ITEM.message
+                    MESSAGES.DEFAULT_HEADER.status          = MESSAGES.SUCCESS_DELETED_ITEM.status
+                    MESSAGES.DEFAULT_HEADER.status_code     = MESSAGES.SUCCESS_DELETED_ITEM.status_code
+                    MESSAGES.DEFAULT_HEADER.message         = MESSAGES.SUCCESS_DELETED_ITEM.message
                     delete MESSAGES.DEFAULT_HEADER.items
 
                     return MESSAGES.DEFAULT_HEADER //200
